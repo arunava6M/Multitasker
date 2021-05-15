@@ -70,12 +70,12 @@ const Card = ({ deleteCard, data, updateCard })=> {
 
   const handleChangeDesc = e => {
     setDescription(e.target.value)
-    updateCard('description', e.target.value, data.id)
+    setTimeout(() => updateCard('description', e.target.value, data.id), 300)
   }
 
   const handleChangeTitle = e => {
     setTitle(e.target.value)
-    updateCard('title', e.target.value, data.id)
+    setTimeout(() => updateCard('title', e.target.value, data.id), 1000)
   }
 
   const hadleDelete = () => deleteCard(data.id)

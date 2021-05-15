@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { createUseStyles } from "react-jss";
 
-import Header from "./Header";
 import Board from "./Board";
 import Box from "./Box";
 import Card from "./Card";
-import { cards, teams } from "../data";
 import { icons } from "../icons";
+import { db } from "../firebase";
+import { UserContext } from "../contexts/UserContext";
 
 const useStyles = createUseStyles({
   flexBox: {
@@ -24,86 +24,86 @@ const useStyles = createUseStyles({
 
 const Dashboard = () => {
   const classes = useStyles();
+  const user = useContext(UserContext);
   const [cardsData, setCardsData] = useState([]);
   const [teamsData, setTeamsData] = useState([]);
 
   useEffect(() => {
-    console.log("inside useEffect");
-    setCardsData(cards);
-    setTeamsData(teams);
-  }, []);
+    db.collection('cards').onSnapshot((snapshot) => {
+      setCardsData(
+        snapshot.docs
+          .filter(doc => doc.data().owner === user.email)
+          .map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+      )
+    });
+  
+    db.collection("boards").onSnapshot((snapshot) => {
+      setTeamsData(snapshot.docs.map((doc) => doc.data()));
+    });
+  }, [user]);
 
   const onDrop = (teamId, cardProps) => {
     if (cardProps.teamId !== teamId) {
-      setCardsData((prevState) => [
-        { ...cardProps, teamId },
-        ...prevState.filter((el) => el.id !== cardProps.id),
-      ]);
+      db.collection('cards').doc(cardProps.id).update({
+        teamId
+      });
     }
   };
 
   const deleteCard = (id) => {
-    setCardsData((prevState) => prevState.filter((el) => el.id !== id));
+    db.collection('cards').doc(id).delete();
   };
 
-  const deleteBoard = (teamId) => {
-    setTeamsData((prevState) => prevState.filter((team) => team.id !== teamId));
-    setCardsData((prevState) => prevState.filter((el) => el.teamId !== teamId));
-  };
-
-  const addNewCard = (teamId) => {
+  const addNewCard = () => {
     const newCard = {
-      id: Math.floor(Math.random() * 100),
-      teamId,
+      owner: user.email,
+      teamId: "toDo",
       title: "",
       description: "",
-    };
-    setCardsData((prevState) => [...prevState, newCard]);
+    }
+    db.collection('cards').add(newCard);
   };
 
   const updateCard = (key, input, id) => {
-    setCardsData((prevState) => {
-      const i = prevState.findIndex((card) => card.id === id);
-      prevState[i][key] = input;
-      return prevState;
-    });
+    db.collection('cards').doc(id).update({
+        [key]: input,
+      });
   };
 
-  const updateBoard = (input, id) => {
-    console.log(id);
-    setTeamsData((prevState) => {
-      const i = prevState.findIndex((board) => board.id === id);
-      console.log(i);
-      prevState[i].name = input;
-      return prevState;
-    });
-  };
+  //   const updateBoard = (input, id) => {
+  //      db.collection(user.uId).doc()
+  //     console.log(id);
+  //     setTeamsData((prevState) => {
+  //       const i = prevState.findIndex((board) => board.id === id);
+  //       console.log(i);
+  //       prevState[i].name = input;
+  //       return prevState;
+  //     });
+  //   };
 
   return (
-    <div className="main">
-      <Header />
-      <Box height="80%" width="700px">
-        {teamsData.map((team) => (
-          <Board
-            key={team.id}
-            team={team}
-            onDrop={onDrop}
-            deleteBoard={deleteBoard}
-            updateBoard={updateBoard}
-          >
-            {cardsData
-              .filter((card) => card.teamId === team.id)
-              .map((card) => {
-                console.log("renderedcard: ", card);
-                return (
-                  <Card
-                    key={card.id}
-                    data={card}
-                    deleteCard={deleteCard}
-                    updateCard={updateCard}
-                  />
-                );
-              })}
+    <Box height="80%" width="700px">
+      {teamsData.map((team) => (
+        <Board
+          key={team.id}
+          team={team}
+          onDrop={onDrop}
+          // updateBoard={updateBoard}
+        >
+          {cardsData
+            .filter((card) => card.teamId === team.id)
+            .map((card) => (
+              <Card
+                key={card.id}
+                data={card}
+                deleteCard={deleteCard}
+                updateCard={updateCard}
+              />
+            ))}
+          {team.id === "toDo" && (
             <Box
               variant="button"
               bordered
@@ -112,10 +112,10 @@ const Dashboard = () => {
             >
               {icons["add"]}
             </Box>
-          </Board>
-        ))}
-      </Box>
-    </div>
+          )}
+        </Board>
+      ))}
+    </Box>
   );
 };
 
