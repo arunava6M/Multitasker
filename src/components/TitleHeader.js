@@ -7,17 +7,32 @@ const useStyles = createUseStyles({
     display: "flex",
     justifyContent: "space-between",
     marginBottom: "10px",
-    width: "90%",
+    width: "100%",
   },
-  input: {
+  textArea: {
     border: "0",
     fontWeight: "600",
     fontSize: "12px",
-    maxWidth: "100%",
+    width: "100%",
     background: "none",
 
     "&:focus": {
       outline: "none",
+    },
+
+    "&::-webkit-scrollbar": {
+      width: "0.5em",
+    },
+
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "darkGrey",
+      borderRadius: "30px",
+      outline: "none",
+      cursor: "pointer",
+    },
+
+    "&::-webkit-resizer": {
+      display: "none",
     },
   },
   button: {
@@ -29,21 +44,22 @@ const useStyles = createUseStyles({
     padding: "2px",
     border: "none",
     cursor: "pointer",
-    display: ({ hovered }) => !hovered && "none",
+    visibility: ({ hovered }) => !hovered && "hidden",
   },
 });
 
-const TitleHeader = ({ handleChange, value, handleDelete, placeholder }) => {
-  const [hovered, setHovered] = useState(false);
+const TitleHeader = ({
+  hovered,
+  handleChange,
+  value,
+  handleDelete,
+  placeholder,
+}) => {
   const classes = useStyles({ hovered });
   return (
-    <div
-      className={classes.header}
-      onMouseOver={() => setHovered(true)}
-      onMouseOut={() => setHovered(false)}
-    >
-      <input
-        className={classes.input}
+    <div className={classes.header}>
+      <textarea
+        className={classes.textArea}
         placeholder={placeholder}
         onChange={handleChange}
         value={value}

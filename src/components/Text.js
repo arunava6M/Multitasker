@@ -9,6 +9,7 @@ const useStyles = createUseStyles(() => {
 
     "&: hover": {
       color: ({ hover }) => hover,
+      cursor: ({ onClick }) => onClick && "pointer",
     },
   };
 
@@ -32,10 +33,13 @@ const useStyles = createUseStyles(() => {
   };
 });
 
-const Text = ({ children, hover, variant, color, bold }) => {
-  const classes = useStyles({ color, hover, bold });
-
-  return <div className={classes[`${variant}Text`]}>{children}</div>;
+const Text = ({ children, hover, variant, color, bold, onClick }) => {
+  const classes = useStyles({ color, hover, bold, onClick });
+  return (
+    <div className={classes[`${variant}Text`]} onClick={onClick}>
+      {children}
+    </div>
+  );
 };
 
 Text.propTypes = {

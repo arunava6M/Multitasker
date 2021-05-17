@@ -8,6 +8,7 @@ import Spacing from "./Spacer";
 import ContributorPanel from "./ContributorPanel";
 import { db } from "../firebase";
 import Box from "./Box";
+import Notification from "./Notification";
 // import { icons } from "../icons";
 // import Grouped from "./Grouped";
 
@@ -40,7 +41,6 @@ const SidePanel = () => {
 
   useEffect(() => {
     if (user.email) {
-      console.log(user);
       db.collection("users")
         .doc(user.email)
         .onSnapshot((doc) => {
@@ -80,9 +80,16 @@ const SidePanel = () => {
         </>
       )}
       <div className={classes.notification}>
-        <Box height="80px" width="200px" shadow>
-          aswdasd
-        </Box>
+        <Notification />
+        {/* <Box height="80px" width="200px" shadow>
+          <Box height="30px" width="200px" orangy alignItems="center"> */}
+        {/* <img className={classes.image} src={user.photoURL} alt="DP" />
+            &nbsp;&nbsp;&nbsp; */}
+        {/* <Text color="white" variant="small">
+              Arunava sent you a request.
+            </Text>
+          </Box>
+        </Box> */}
       </div>
     </div>
   );

@@ -18,7 +18,7 @@ const Login = ({ signIn }) => {
     <div className={classes.signInContainer}>
       <Box width="300px" padding="50px" height="100px" alignItems="center">
         <Text>Sign in with Google to continue </Text>
-        <Button bordered width="100px" height="60px" onClick={signIn}>
+        <Button bordered onClick={signIn}>
           Sign in
         </Button>
       </Box>

@@ -67,6 +67,7 @@ const Box = ({
   bgColor,
   padding,
   justify,
+  key,
 }) => {
   const classes = useStyles({
     height,
@@ -84,7 +85,11 @@ const Box = ({
     justify,
   });
   return (
-    <div className={classes[`container_${variant}`]} onClick={onClick}>
+    <div
+      key={key}
+      className={classes[`container_${variant}`]}
+      onClick={onClick}
+    >
       {children}
     </div>
   );

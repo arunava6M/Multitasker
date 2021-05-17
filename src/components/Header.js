@@ -2,11 +2,11 @@ import { createUseStyles } from "react-jss";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { icons } from "../icons";
-import Box from "./Box";
 import Grouped from "./Grouped";
 import Text from "./Text";
 import { db } from "../firebase";
-import { Link } from "react-router-dom";
+import Button from "./Button";
+import { Link, useHistory } from "react-router-dom";
 
 const useStyles = createUseStyles({
   headerContainer: {
@@ -55,15 +55,15 @@ const headerLinks = [
   },
 ];
 
-const Header = ({ history, isSmallScreen, signOut }) => {
+const Header = ({ isSmallScreen, signOut }) => {
   const classes = useStyles({ isSmallScreen });
   const user = useContext(UserContext);
+  const history = useHistory();
 
   const [userData, setUserData] = useState({});
 
   useEffect(() => {
     if (user.email) {
-      console.log(user);
       db.collection("users")
         .doc(user.email)
         .onSnapshot((doc) => {
@@ -79,30 +79,28 @@ const Header = ({ history, isSmallScreen, signOut }) => {
   }, [setUserData, user]);
 
   if (!user.email) return null;
-  const handleSignOut = () => {
-    history.push("/");
-    console.log(history);
-    signOut();
-  };
+
+  if (!userData.displayName) return <div>Loading</div>;
+
   return (
     <div className={classes.headerContainer}>
       <Grouped>
         {headerLinks.map(({ name, icon, link }) => (
-          <Box variant="button" onClick={() => console.log("inside")}>
+          <Button key={name} onClick={() => history.push(link)}>
             <Text variant="medium">{icons[icon]}</Text>&nbsp;&nbsp;
             <Text variant="small">{name}</Text>
-          </Box>
+          </Button>
         ))}
       </Grouped>
       <Grouped>
         <Text variant="small" color="#ffc799">
-          {userData.displayName}
+          {userData.displayName.split(" ")[0]}
         </Text>
         <img className={classes.image} src={userData.photoURL} alt="DP" />
         <Link to="/">
-          <Box variant="button" onClick={signOut} bgColor="#f7aba6">
+          <Button width={50} bordered onClick={signOut}>
             {icons["signOut"]}
-          </Box>
+          </Button>
         </Link>
       </Grouped>
     </div>

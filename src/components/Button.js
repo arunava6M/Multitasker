@@ -1,27 +1,47 @@
 import { createUseStyles } from "react-jss";
-import { MdFiberManualRecord } from "react-icons/md";
+import Proptypes from "prop-types";
 
-const useStyles = createUseStyles({
-  buttonbaseSyles: {
+const useStyles = createUseStyles(() => {
+  const baseStyles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     padding: "10px",
     margin: "5px",
-    width: ({ width }) => width || "30px",
-    height: ({ height }) => height || "30px",
-    color: ({ bordered }) => (bordered ? "#eb762b" : "#fff"),
-    transition: "0.2s",
     cursor: "pointer",
-    borderRadius: "15px",
-    border: ({ bordered }) => bordered && "2px solid #eb762b",
+  };
+  return {
+    normal_button: {
+      ...baseStyles,
 
-    "&:hover": {
-      backgroundColor: ({ bgColor }) => bgColor || "#fff",
-      color: "black",
-      border: "none",
+      textDecoration: "none",
+      width: ({ width }) => `${width}px`,
+      height: ({ height }) => `${height}px`,
+      color: "#ffc799",
+      transition: "0.2s",
+      borderRadius: "15px",
+      border: ({ bordered }) => (bordered ? "2px solid #ffc799" : "none"),
+      background: "none",
+
+      "&:hover": {
+        backgroundColor: ({ bgColor }) => bgColor,
+        color: "black",
+        border: "none",
+      },
     },
-  },
+
+    text_button: {
+      ...baseStyles,
+
+      background: "none",
+      color: "inherit",
+      border: "none",
+      padding: 0,
+      font: "inherit",
+      cursor: "pointer",
+      outline: "inherit",
+    },
+  };
 });
 
 const Button = ({
@@ -36,11 +56,27 @@ const Button = ({
   const classes = useStyles({ width, height, bordered, bgColor });
 
   return (
-    <button className={classes.buttonbaseSyles} onClick={onClick}>
-      {variant === "bullet" && <MdFiberManualRecord />}
+    <button className={classes[`${variant}_button`]} onClick={onClick}>
       {children}
     </button>
   );
 };
 
+Button.propTypes = {
+  children: Proptypes.node.isRequired,
+  onClick: Proptypes.func.isRequired,
+  width: Proptypes.number,
+  height: Proptypes.number,
+  bordered: Proptypes.bool,
+  bgColor: Proptypes.string,
+  variant: Proptypes.oneOf(["normal", "text"]),
+};
+
+Button.defaultProps = {
+  width: 100,
+  height: 40,
+  bordered: false,
+  bgColor: "#fff",
+  variant: "normal",
+};
 export default Button;

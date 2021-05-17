@@ -1,27 +1,34 @@
 import { createUseStyles } from "react-jss";
 import { useState, useContext, useEffect } from "react";
+
 import { db } from "../firebase";
-import Box from "./Box";
 import { icons } from "../icons";
 import { UserContext } from "../contexts/UserContext";
+import Grouped from "./Grouped";
+import Box from "./Box";
 import Text from "./Text";
+import Button from "./Button";
+import { useKeypress } from "../hooks/useKeypress";
 
 const useStyles = createUseStyles({
   style: {
-    height: ({ height }) => height,
-    width: ({ width }) => width,
+    height: "250px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   input: {
     outline: "none",
-    width: "100%",
-    border: "2 solid",
-    marginTop: "10px",
-    borderRadius: "30px",
-    borderColor: "#fff",
+    width: "80%",
+    // border: "2 solid",
+    margin: "5px",
+    // borderRadius: "30px",
+    // borderColor: "#fff",
+    border: "none",
+    borderBottom: "3px solid #eb762b",
     fontFamily: "inherit",
     paddingLeft: "5px",
     height: "30px",
-    width: "70%",
     fontSize: "12px",
     fontWeight: 500,
     background: "none",
@@ -31,6 +38,21 @@ const useStyles = createUseStyles({
       outline: "none",
       stroke: "#fff",
     },
+    "&::placeholder": {
+      color: "#ffc799",
+    },
+  },
+  addButton: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    padding: "10px",
+    alignItems: "center",
+    height: "40px",
+    width: "200px",
+    borderRadius: "20px",
+    border: "2px solid #ffc799",
+    cursor: "pointer",
   },
 });
 
@@ -47,7 +69,6 @@ const UserBox = ({ email }) => {
   db.collection("users")
     .doc(email)
     .onSnapshot((doc) => {
-      // console.log("document: ", doc);
       setUser(doc.data());
     });
   return (
@@ -62,11 +83,13 @@ const UserBox = ({ email }) => {
 const ContributorPanel = ({ height, width }) => {
   const classes = useStyles({ height, width });
 
-  const [gmail, setGmail] = useState(null);
+  const [gmail, setGmail] = useState("");
   const [contributors, setContributors] = useState([]);
+  const [addClicked, setAddClicked] = useState(false);
 
   const user = useContext(UserContext);
 
+  useKeypress("Escape", () => setAddClicked(false));
   useEffect(() => {
     user.email &&
       db
@@ -80,6 +103,8 @@ const ContributorPanel = ({ height, width }) => {
   }, [user, setContributors]);
 
   const gmailInput = (e) => setGmail(e.target.value);
+
+  const handleAddClick = () => setAddClicked(true);
 
   const addContributor = () => {
     //if contributor not present as user then dont add else add a contributor
@@ -115,15 +140,33 @@ const ContributorPanel = ({ height, width }) => {
         Object.entries(contributors).map(
           (c) => c[1] && <UserBox email={c[0]} />
         )}
-      <input
-        className={classes.input}
-        value={gmail}
-        type="email"
-        onChange={gmailInput}
-      />
-      <Box variant="button" onClick={addContributor}>
-        {icons["add"]}
-      </Box>
+      <div className={classes.addButton} onClick={handleAddClick}>
+        {addClicked ? (
+          <Grouped>
+            <input
+              className={classes.input}
+              value={gmail}
+              type="email"
+              onChange={gmailInput}
+              placeholder={`Add or press 'Esc'`}
+            />
+            <Button variant="text" onClick={addContributor}>
+              <Text color="#ffc799" variant="regular">
+                {icons["send"]}
+              </Text>
+            </Button>
+          </Grouped>
+        ) : (
+          <>
+            <Text variant="regular" color="#ffc799">
+              {icons["add"]}
+            </Text>
+            <Text variant="small" color="#ffc799">
+              Add contributor
+            </Text>
+          </>
+        )}
+      </div>
     </div>
   );
 };

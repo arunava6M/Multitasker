@@ -7,7 +7,9 @@ import {
   MdAssignment,
   MdPowerSettingsNew,
   MdLibraryAdd,
+  MdSend,
 } from "react-icons/md";
+import { FcOk, FcApprove } from "react-icons/fc";
 
 export const icons = {
   account: <MdAccountCircle />,
@@ -18,4 +20,7 @@ export const icons = {
   task: <MdAssignment />,
   signOut: <MdPowerSettingsNew />,
   contribute: <MdLibraryAdd />,
+  ok: <FcOk />,
+  fcApprove: <FcApprove />,
+  send: <MdSend />,
 };

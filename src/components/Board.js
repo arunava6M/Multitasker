@@ -17,14 +17,12 @@ const Board = ({ team, updateBoard, children, onDrop, deleteBoard }) => {
   const classes = useStyles();
 
   const handleDrop = (e) => {
-    console.log("dropped");
     const cardProps = JSON.parse(e.dataTransfer.getData("card"));
     onDrop(team.id, cardProps);
   };
 
   const onDragOver = (e) => {
     e.preventDefault();
-    console.log("dragged");
   };
 
   return (
