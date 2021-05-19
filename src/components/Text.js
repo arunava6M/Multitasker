@@ -52,7 +52,7 @@ Text.propTypes = {
 
 Text.defaultProps = {
   variant: "medium",
-  color: false,
+  color: "inherit",
   bold: false,
   hover: false,
 };

@@ -67,7 +67,7 @@ const Header = ({ isSmallScreen, signOut }) => {
       db.collection("users")
         .doc(user.email)
         .onSnapshot((doc) => {
-          const name = doc.data().displayName.split(" ");
+          const name = doc.data()?.displayName.split(" ");
           const tempData = {
             firstName: name[0],
             lastName: name[1],
@@ -87,7 +87,8 @@ const Header = ({ isSmallScreen, signOut }) => {
       <Grouped>
         {headerLinks.map(({ name, icon, link }) => (
           <Button key={name} onClick={() => history.push(link)}>
-            <Text variant="medium">{icons[icon]}</Text>&nbsp;&nbsp;
+            <Text variant="medium">{icons[icon]}</Text>
+            &nbsp;&nbsp;
             <Text variant="small">{name}</Text>
           </Button>
         ))}

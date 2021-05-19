@@ -26,27 +26,6 @@ const useStyles = createUseStyles(() => {
       boxShadow: ({ shadow }) =>
         shadow && "-1px 93px 73px -53px rgba(0,0,0,0.53)",
     },
-
-    container_button: {
-      ...commonStyle,
-
-      minWidth: ({ width }) => width || "30px",
-      maxHeight: ({ maxHeight }) => maxHeight || "30px",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      color: ({ bordered }) => (bordered ? "#eb762b" : "#fff"),
-      transition: "0.2s",
-      cursor: "pointer",
-      borderRadius: "15px",
-      border: ({ bordered }) => bordered && "5px",
-      borderColor: ({ bordered }) => bordered && "#eb762b",
-
-      "&:hover": {
-        backgroundColor: ({ bgColor }) => bgColor || "#fff",
-        color: "black",
-      },
-    },
   };
 });
 
@@ -54,17 +33,12 @@ const Box = ({
   children,
   variant = "wrapper",
   maxWidth,
-  bordered,
-  onClick,
   height,
   shadow,
   width,
   orangy,
   transparent,
-  clickable,
-  maxHeight,
   alignItems,
-  bgColor,
   padding,
   justify,
   key,
@@ -74,22 +48,14 @@ const Box = ({
     shadow,
     width,
     maxWidth,
-    bordered,
     orangy,
     transparent,
-    clickable,
-    maxHeight,
     alignItems,
-    bgColor,
     padding,
     justify,
   });
   return (
-    <div
-      key={key}
-      className={classes[`container_${variant}`]}
-      onClick={onClick}
-    >
+    <div key={key} className={classes[`container_${variant}`]}>
       {children}
     </div>
   );

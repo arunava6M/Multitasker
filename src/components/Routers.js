@@ -9,6 +9,7 @@ import Dashboard from "./Dashboard";
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 import Header from "./Header";
+import Contribute from "./Contribute";
 
 const Routers = ({ signIn, signOut }) => {
   const user = useContext(UserContext);
@@ -27,7 +28,7 @@ const Routers = ({ signIn, signOut }) => {
           )}
         </Route>
         <Route path="/dashboard">{checkLogin(<Dashboard />)}</Route>
-        <Route path="/contribute" />
+        <Route path="/contribute">{checkLogin(<Contribute />)}</Route>
       </Switch>
     </Router>
   );

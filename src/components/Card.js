@@ -13,7 +13,6 @@ const useStyles = createUseStyles({
     cursor: "pointer",
     marginBottom: "15px",
     minHeight: "100px",
-    //  width: '50%',
     borderRadius: "12px",
     transition: "0.3s",
     //  transform: ({ dragStarted }) => dragStarted && 'rotate(10deg)'
@@ -22,7 +21,7 @@ const useStyles = createUseStyles({
   textarea: {
     border: "0",
     background: "none",
-    height: "80%",
+    minHeight: "80px",
 
     "&:focus": {
       outline: "none",
@@ -45,7 +44,7 @@ const useStyles = createUseStyles({
   },
 });
 
-const Card = ({ deleteCard, data, updateCard }) => {
+const Card = ({ deleteCard, data, updateCard, customBlock }) => {
   const [description, setDescription] = useState(data.description);
   const [title, setTitle] = useState(data.title);
   const [dragStarted, setDragStarted] = useState(false);
@@ -102,6 +101,7 @@ const Card = ({ deleteCard, data, updateCard }) => {
         value={description}
         placeholder="Describe the task"
       />
+      {customBlock && customBlock()}
     </div>
   );
 };

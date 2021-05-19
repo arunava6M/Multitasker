@@ -9,6 +9,8 @@ const useStyles = createUseStyles(() => {
     padding: "10px",
     margin: "5px",
     cursor: "pointer",
+    boxShadow: ({ shadow }) =>
+      shadow && "-1px 93px 73px -53px rgba(0,0,0,0.53)",
   };
   return {
     normal_button: {
@@ -17,14 +19,14 @@ const useStyles = createUseStyles(() => {
       textDecoration: "none",
       width: ({ width }) => `${width}px`,
       height: ({ height }) => `${height}px`,
-      color: "#ffc799",
+      color: ({ color }) => color,
       transition: "0.2s",
       borderRadius: "15px",
       border: ({ bordered }) => (bordered ? "2px solid #ffc799" : "none"),
-      background: "none",
+      backgroundColor: ({ bg }) => bg,
 
       "&:hover": {
-        backgroundColor: ({ bgColor }) => bgColor,
+        backgroundColor: "#fff",
         color: "black",
         border: "none",
       },
@@ -51,10 +53,11 @@ const Button = ({
   width,
   height,
   bordered,
-  bgColor,
+  bg,
+  color,
+  shadow,
 }) => {
-  const classes = useStyles({ width, height, bordered, bgColor });
-
+  const classes = useStyles({ width, height, bordered, bg, color, shadow });
   return (
     <button className={classes[`${variant}_button`]} onClick={onClick}>
       {children}
@@ -68,15 +71,19 @@ Button.propTypes = {
   width: Proptypes.number,
   height: Proptypes.number,
   bordered: Proptypes.bool,
-  bgColor: Proptypes.string,
+  bg: Proptypes.string,
   variant: Proptypes.oneOf(["normal", "text"]),
+  color: Proptypes.string,
+  shadow: Proptypes.bool,
 };
 
 Button.defaultProps = {
   width: 100,
   height: 40,
   bordered: false,
-  bgColor: "#fff",
+  bg: "transparent",
   variant: "normal",
+  color: "#ffc799",
+  shadow: false,
 };
 export default Button;

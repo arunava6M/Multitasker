@@ -1,10 +1,8 @@
 import { createUseStyles } from "react-jss";
 import { useState, useContext, useEffect } from "react";
 import { db } from "../firebase";
-import Box from "./Box";
-import { icons } from "../icons";
 import { UserContext } from "../contexts/UserContext";
-import Text from "./Text";
+import UserBox from "./UserBox";
 
 const useStyles = createUseStyles({
   style: {
@@ -33,35 +31,6 @@ const useStyles = createUseStyles({
   },
 });
 
-const userBoxStyles = createUseStyles({
-  image: {
-    height: "35px",
-    borderRadius: "50%",
-  },
-});
-
-const UserBox = ({ email, acceptRequest }) => {
-  const classes = userBoxStyles();
-  const [user, setUser] = useState({});
-  db.collection("users")
-    .doc(email)
-    .onSnapshot((doc) => {
-      setUser(doc.data());
-    });
-  return (
-    <Box height="30px" width="200px" alignItems="center">
-      <img className={classes.image} src={user.photoURL} alt="DP" />
-      &nbsp;&nbsp;&nbsp;
-      <Text variant="small">{`${
-        user.displayName?.split(" ")[0]
-      } sent you a request`}</Text>
-      <Text variant="regular" onClick={() => acceptRequest(email)}>
-        {icons["ok"]}
-      </Text>
-    </Box>
-  );
-};
-
 const Notification = ({ height, width }) => {
   const classes = useStyles({ height, width });
   const [contributeReq, setContributeReq] = useState([]);
@@ -81,7 +50,6 @@ const Notification = ({ height, width }) => {
   }, [user, setContributeReq]);
 
   const acceptRequest = (email) => {
-    console.log("asdasd");
     db.collection("contributeTo")
       .doc(user.email)
       .update({

@@ -77,20 +77,11 @@ const SidePanel = () => {
             Your Contributors
           </Text>
           <ContributorPanel />
+          <div className={classes.notification}>
+            <Notification />
+          </div>
         </>
       )}
-      <div className={classes.notification}>
-        <Notification />
-        {/* <Box height="80px" width="200px" shadow>
-          <Box height="30px" width="200px" orangy alignItems="center"> */}
-        {/* <img className={classes.image} src={user.photoURL} alt="DP" />
-            &nbsp;&nbsp;&nbsp; */}
-        {/* <Text color="white" variant="small">
-              Arunava sent you a request.
-            </Text>
-          </Box>
-        </Box> */}
-      </div>
     </div>
   );
 };

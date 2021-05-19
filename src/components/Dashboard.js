@@ -7,6 +7,10 @@ import Card from "./Card";
 import { icons } from "../icons";
 import { db } from "../firebase";
 import { UserContext } from "../contexts/UserContext";
+import Button from "./Button";
+import UserBox from "./UserBox";
+import Grouped from "./Grouped";
+import Text from "./Text";
 
 const useStyles = createUseStyles({
   flexBox: {
@@ -83,9 +87,10 @@ const Dashboard = () => {
   //       return prevState;
   //     });
   //   };
+  const acceptCard = (id) => updateCard("accepted", true, id);
 
   return (
-    <Box height="80%" width="700px">
+    <Box height="80%" width="90%">
       {teamsData.map((team) => (
         <Board
           key={team.id}
@@ -101,17 +106,44 @@ const Dashboard = () => {
                 data={card}
                 deleteCard={deleteCard}
                 updateCard={updateCard}
+                customBlock={() =>
+                  card.contributor && (
+                    <>
+                      <Grouped>
+                        <Text variant="small">Assigned by</Text>
+                        <UserBox email={card.contributor} onlyPic />
+                      </Grouped>
+                      {!card.accepted && (
+                        <Grouped>
+                          <Button
+                            color="#eb762b"
+                            height={5}
+                            onClick={() => deleteCard(card.id)}
+                          >
+                            Decline
+                          </Button>
+                          <Button
+                            bg="#eb762b"
+                            height={5}
+                            onClick={() => acceptCard(card.id)}
+                          >
+                            Accept
+                          </Button>
+                        </Grouped>
+                      )}
+                    </>
+                  )
+                }
               />
             ))}
           {team.id === "toDo" && (
-            <Box
-              variant="button"
-              bordered
+            <Button
+              color="#eb762b"
               className={classes.button}
               onClick={() => addNewCard(team.id)}
             >
               {icons["add"]}
-            </Box>
+            </Button>
           )}
         </Board>
       ))}

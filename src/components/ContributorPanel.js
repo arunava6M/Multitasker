@@ -5,10 +5,10 @@ import { db } from "../firebase";
 import { icons } from "../icons";
 import { UserContext } from "../contexts/UserContext";
 import Grouped from "./Grouped";
-import Box from "./Box";
 import Text from "./Text";
 import Button from "./Button";
 import { useKeypress } from "../hooks/useKeypress";
+import UserBox from "./UserBox";
 
 const useStyles = createUseStyles({
   style: {
@@ -20,10 +20,7 @@ const useStyles = createUseStyles({
   input: {
     outline: "none",
     width: "80%",
-    // border: "2 solid",
     margin: "5px",
-    // borderRadius: "30px",
-    // borderColor: "#fff",
     border: "none",
     borderBottom: "3px solid #eb762b",
     fontFamily: "inherit",
@@ -55,30 +52,6 @@ const useStyles = createUseStyles({
     cursor: "pointer",
   },
 });
-
-const userBoxStyles = createUseStyles({
-  image: {
-    height: "35px",
-    borderRadius: "50%",
-  },
-});
-
-const UserBox = ({ email }) => {
-  const classes = userBoxStyles();
-  const [user, setUser] = useState({});
-  db.collection("users")
-    .doc(email)
-    .onSnapshot((doc) => {
-      setUser(doc.data());
-    });
-  return (
-    <Box height="30px" width="200px" alignItems="center">
-      <img className={classes.image} src={user.photoURL} alt="DP" />
-      &nbsp;&nbsp;&nbsp;
-      <Text variant="small">{user.displayName}</Text>
-    </Box>
-  );
-};
 
 const ContributorPanel = ({ height, width }) => {
   const classes = useStyles({ height, width });
@@ -123,10 +96,12 @@ const ContributorPanel = ({ height, width }) => {
             });
           db.collection("contributeTo")
             .doc(gmail)
-            .set({
-              ...contributors,
-              [user.email]: false,
-            });
+            .set(
+              {
+                [user.email]: false,
+              },
+              { merge: true }
+            );
           alert("Request sent successfully.");
         }
       });
