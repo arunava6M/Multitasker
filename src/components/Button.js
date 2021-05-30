@@ -43,6 +43,23 @@ const useStyles = createUseStyles(() => {
       cursor: "pointer",
       outline: "inherit",
     },
+    neumorphic_button: {
+      ...baseStyles,
+
+      outline: "none",
+      border: "none",
+      borderRadius: "30px",
+      fontWeight: 700,
+      background: "#24cfaa",
+      color: "#fff",
+      padding: "15px",
+      boxShadow: "3px 5px 8px #cbced1, -3px -8px 8px #ffffff",
+      transition: "0.3s",
+
+      "&:hover": {
+        background: "#86e3cf",
+      },
+    },
   };
 });
 

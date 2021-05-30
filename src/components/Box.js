@@ -26,6 +26,14 @@ const useStyles = createUseStyles(() => {
       boxShadow: ({ shadow }) =>
         shadow && "-1px 93px 73px -53px rgba(0,0,0,0.53)",
     },
+    container_neumorphic: {
+      width: "300px",
+      height: "150px",
+      padding: "60px 35px 35px 35px",
+      borderRadius: "40px",
+      background: "#ecf0f3",
+      boxShadow: "13px 13px 20px #cbced1, -13px -13px 20px #ffffff",
+    },
   };
 });
 

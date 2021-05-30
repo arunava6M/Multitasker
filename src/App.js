@@ -49,14 +49,12 @@ function App() {
   return (
     <div className="App">
       <UserContext.Provider value={user}>
-        <Box orangy shadow>
-          <div className="sidePanel">
-            <SidePanel />
-          </div>
-          <div className="main">
-            <Routers signIn={signIn} signOut={signOut} />
-          </div>
-        </Box>
+        {/* <div className="sidePanel">
+          <SidePanel />
+        </div> */}
+        <div className="main">
+          <Routers signIn={signIn} signOut={signOut} />
+        </div>
       </UserContext.Provider>
     </div>
   );
