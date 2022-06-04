@@ -33,7 +33,7 @@ const UserBox = ({ email, onClick, onlyPic = false }) => {
     onClick ? (
       <Button onClick={onClick} color="black" {...props} />
     ) : (
-      <Box height="30px" alignItems="center" {...props} />
+      <Box height="1px" alignItems="center" {...props} />
     );
   if (onlyPic) {
     return (

@@ -6,11 +6,13 @@ import { createUseStyles } from "react-jss";
 
 const useStyles = createUseStyles({
   signInContainer: {
-    height: "100%",
+    // height: "100%",
+    marginTop: "250px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     // background: "#ecf0f3",
+    
   },
 });
 
@@ -25,7 +27,7 @@ const Login = ({ signIn }) => {
         height="100px"
         alignItems="center"
       >
-        <Text bold color="#807b78">
+        <Text bold color="#a5a4bf">
           Sign in with Google to continue{" "}
         </Text>
         <Spacer height="30px" />

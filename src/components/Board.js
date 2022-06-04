@@ -7,15 +7,21 @@ const useStyles = createUseStyles({
     borderRadius: "12px",
     display: "flex",
     flexDirection: "column",
-    width: "25%",
+    width: "280px",
     margin: "10px",
     padding: "15px",
+    // backgroundColor: "#e7e9f6",
+   backgroundColor: 'rgba(25, 28, 41,0.5)',
+   boxShadow: '2px 1px 39px -3px rgba(0,0,0,0.2)',
+   height: ({children}) => `${children.length * 200}px`
+
+    // height: "auto"
   },
 });
 
 const Board = ({ team, updateBoard, children, onDrop, deleteBoard }) => {
-  const classes = useStyles();
-
+  const classes = useStyles({children});
+  console.log('asdasd: ', children.length)
   const handleDrop = (e) => {
     const cardProps = JSON.parse(e.dataTransfer.getData("card"));
     onDrop(team.id, cardProps);

@@ -6,6 +6,7 @@ const useStyles = createUseStyles(() => {
     justifyContent: "space-around",
     padding: "10px",
     margin: "10px",
+    transition: '1s'
   };
 
   return {
@@ -17,22 +18,25 @@ const useStyles = createUseStyles(() => {
       height: ({ height }) => height || "80vh",
       width: ({ width }) => width || "70vw",
       maxWidth: ({ maxWidth }) => maxWidth,
-      borderRadius: "30px",
+      borderRadius: "8px",
       padding: ({ padding }) => padding || "10px",
-      backgroundColor: ({ transparent, primary }) =>
-        !transparent && (primary ? "#eb762b" : "#ede6e1"),
-      backgroundImage: ({ orangy }) =>
-        orangy && "linear-gradient(to bottom right, #eb762b 10%, #c2581f)",
+      // backgroundImage: 'linear-gradient(140deg, #3a4caa, #121b45)',
+
+      // backgroundColor: ({ transparent, primary }) =>
+      //   !transparent && (primary ? "#eb762b" : "#ede6e1"),
+      // backgroundColor: "#b7b9c6",
+      // backgroundImage: ({ orangy }) =>
+      //   orangy && "linear-gradient(to bottom right, #eb762b 10%, #c2581f)",
       boxShadow: ({ shadow }) =>
         shadow && "-1px 93px 73px -53px rgba(0,0,0,0.53)",
     },
     container_neumorphic: {
       width: "300px",
-      height: "150px",
-      padding: "60px 35px 35px 35px",
+      height: "120px",
+      padding: "50px 35px 35px 35px",
       borderRadius: "40px",
-      background: "#ecf0f3",
-      boxShadow: "13px 13px 20px #cbced1, -13px -13px 20px #ffffff",
+      background: "#3a4caa",
+      boxShadow: "13px 13px 20px #213183, -13px -13px 20px #596bca",
     },
   };
 });

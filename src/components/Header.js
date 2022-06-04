@@ -25,7 +25,7 @@ const useStyles = createUseStyles({
     paddingRight: ({ isSmallScreen }) => !isSmallScreen && "50px",
     paddingLeft: "50px",
   },
-  search: {
+    search: {
     width: ({ isSmallScreen }) => (isSmallScreen ? "100%" : "40%"),
     border: "3px solid #00B4CC",
     padding: "5px",

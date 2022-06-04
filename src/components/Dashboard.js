@@ -90,14 +90,24 @@ const Dashboard = () => {
   const acceptCard = (id) => updateCard("accepted", true, id);
 
   return (
-    <Box height="80%" width="90%">
+    <Box height="100%" width="90%">
       {teamsData.map((team) => (
         <Board
           key={team.id}
           team={team}
           onDrop={onDrop}
+          // transparent={true}
           // updateBoard={updateBoard}
         >
+          {team.id === "toDo" && (
+            <Button
+              color="#eb762b"
+              className={classes.button}
+              onClick={() => addNewCard(team.id)}
+            >
+              {icons["add"]}
+            </Button>
+          )}
           {cardsData
             .filter((card) => card.teamId === team.id)
             .map((card) => (
@@ -136,15 +146,6 @@ const Dashboard = () => {
                 }
               />
             ))}
-          {team.id === "toDo" && (
-            <Button
-              color="#eb762b"
-              className={classes.button}
-              onClick={() => addNewCard(team.id)}
-            >
-              {icons["add"]}
-            </Button>
-          )}
         </Board>
       ))}
     </Box>
