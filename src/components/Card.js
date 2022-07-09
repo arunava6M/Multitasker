@@ -13,18 +13,26 @@ const useStyles = createUseStyles({
     justifyContent: "flex-start",
     cursor: "pointer",
     marginBottom: "15px",
-    height:({description}) => {
-      if(description.length > 46){
-        return "120px"
-      } else if( description.length >23){
-        return "100px"
-      } else{
-        return "80px"
-      }}
-    ,
+    // height:({description}) => {
+    //   if(description.length > 46){
+    //     return "120px"
+    //   } else if( description.length >23){
+    //     return "100px"
+    //   } else{
+    //     return "80px"
+    //   }}
+    
     borderRadius: "12px",
     transition: "0.3s",
-     transform: ({ dragStarted }) => dragStarted && 'rotate(10deg)'
+     transform: ({ dragStarted }) => dragStarted && 'rotate(10deg)',
+  },
+
+  customBlock: {
+    backgroundImage: 'linear-gradient(135deg, rgba(53, 54, 59,0.9), rgba(53, 54, 59,0.3), rgba(53, 54, 59,0.0))',
+    zIndex: '0',
+    marginTop: '10px',
+    borderRadius: '0 0 12px 12px',
+    padding: '10px'
   },
 
   textarea: {
@@ -60,7 +68,6 @@ const Card = ({ deleteCard, data, updateCard, customBlock }) => {
   const [dragStarted, setDragStarted] = useState(false);
   const [hovered, setHovered] = useState(false);
   const classes = useStyles({ dragStarted, description });
-  console.log('descr:', description.length)
 
   const dragStart = (e) => {
     setDragStarted(true);
@@ -112,7 +119,9 @@ const Card = ({ deleteCard, data, updateCard, customBlock }) => {
         value={description}
         placeholder="Describe the task"
       />
-      {customBlock && customBlock()}
+      {customBlock && 
+        <div className={classes.customBlock}>{customBlock()}</div>
+      }
     </div>
   );
 };

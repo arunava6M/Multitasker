@@ -1,32 +1,9 @@
-.App {
-  /* text-align: center; */
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  /* align-items: center; */
-  background-color: #f2f3f9;
-  /* background-image: linear-gradient(rgb(115, 6, 158), rgb(69, 12, 116)); */
-  font-family: "Quicksand", sans-serif;
-}
-
-.main {
-  /* flex: 3; */
-  /* z-index: 2; */
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
-}
-
 a,
 a:hover,
 a:focus,
 a:active {
   text-decoration: none;
   color: inherit;
-}
-
-.sidePanel {
-  /* flex: 1; */
 }
 
 .signInContainer {

@@ -35,6 +35,7 @@ const UserBox = ({ email, onClick, onlyPic = false }) => {
     ) : (
       <Box height="1px" alignItems="center" {...props} />
     );
+
   if (onlyPic) {
     return (
       <div className={classes.customBlock}>
@@ -47,7 +48,7 @@ const UserBox = ({ email, onClick, onlyPic = false }) => {
     <Renderer width="200px">
       <img className={classes.image} src={user.photoURL} alt="DP" />
       &nbsp;&nbsp;&nbsp;
-      <Text variant="small">{user.displayName}</Text>
+      <Text variant="small" color="#fff">{user.displayName}</Text>
     </Renderer>
   );
 };

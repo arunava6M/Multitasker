@@ -1,7 +1,6 @@
 import {
-  BrowserRouter as Router,
-  Redirect,
-  Switch,
+  Navigate,
+  Routes,
   Route,
 } from "react-router-dom";
 import Login from "../pages/login";
@@ -76,19 +75,17 @@ const ImageSlider = () => {
 const Routers = ({ signIn, signOut }) => {
   const user = useContext(UserContext);
   const checkLogin = (component) =>
-    user.email ? component : <Redirect to="/" />;
-
+    user.email ? component : <Navigate to="/" />;
+  console.log('inside routers')
   return (
-    <Router>
-      {/* <Header signOut={signOut} /> */}
-      <Switch>
-        <Route exact path="/">
-          {user.email ? <Redirect to="/dashboard" /> : <ImageSlider />}
-        </Route>
-        <Route path="/dashboard">{checkLogin(<Dashboard />)}</Route>
-        <Route path="/contribute">{checkLogin(<Contribute />)}</Route>
-      </Switch>
-    </Router>
+    <>
+      <Header signOut={signOut} />
+      <Routes>
+        <Route exact path="/" element={ user.email ? <Navigate to="/dashboard" /> : <ImageSlider />} />
+        <Route path="/dashboard" element={checkLogin(<Dashboard />)} />
+        <Route path="/contribute" element={checkLogin(<Contribute />)} />
+      </Routes>
+    </>
   );
 };
 

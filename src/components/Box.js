@@ -1,4 +1,6 @@
 import { createUseStyles } from "react-jss";
+import { ThemeContext } from "../contexts/ThemeContext";
+import { useContext } from "react";
 
 const useStyles = createUseStyles(() => {
   const commonStyle = {
@@ -20,13 +22,6 @@ const useStyles = createUseStyles(() => {
       maxWidth: ({ maxWidth }) => maxWidth,
       borderRadius: "8px",
       padding: ({ padding }) => padding || "10px",
-      // backgroundImage: 'linear-gradient(140deg, #3a4caa, #121b45)',
-
-      // backgroundColor: ({ transparent, primary }) =>
-      //   !transparent && (primary ? "#eb762b" : "#ede6e1"),
-      // backgroundColor: "#b7b9c6",
-      // backgroundImage: ({ orangy }) =>
-      //   orangy && "linear-gradient(to bottom right, #eb762b 10%, #c2581f)",
       boxShadow: ({ shadow }) =>
         shadow && "-1px 93px 73px -53px rgba(0,0,0,0.53)",
     },
@@ -35,8 +30,9 @@ const useStyles = createUseStyles(() => {
       height: "120px",
       padding: "50px 35px 35px 35px",
       borderRadius: "40px",
-      background: "#3a4caa",
-      boxShadow: "13px 13px 20px #213183, -13px -13px 20px #596bca",
+      background: 'linear-gradient(145deg, #332852, #2b2145)',
+      boxShadow:  `32px 32px 64px #231b37,
+             -32px -32px 64px #3d2f63`
     },
   };
 });
@@ -55,6 +51,7 @@ const Box = ({
   justify,
   key,
 }) => {
+  const theme = useContext(ThemeContext)
   const classes = useStyles({
     height,
     shadow,
@@ -65,6 +62,7 @@ const Box = ({
     alignItems,
     padding,
     justify,
+    theme
   });
   return (
     <div key={key} className={classes[`container_${variant}`]}>
