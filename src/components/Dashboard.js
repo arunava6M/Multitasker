@@ -81,6 +81,42 @@ const Dashboard = () => {
       });
   }
 
+  const customBlockRenderer = ({owner, accepted, contributor, id}) => {
+    const isCardOwner = owner === user.email
+    return (
+      <>
+        <Grouped>
+          {accepted === "DECLINED" && <Text variant="small" color="rgb(255, 255, 255, 0.5)">Task Declined</Text>}
+          {accepted !== "DECLINED" && <Text variant="small" color="rgb(255, 255, 255, 0.9)">Assigned {isCardOwner ? 'to' : 'by'}</Text>}
+          <UserBox email={isCardOwner ? contributor : owner} onlyPic />
+        </Grouped>
+        {!isCardOwner && !accepted && (
+          <>
+            <Spacing height="5px" />
+            <Grouped>
+              <Button
+                color="rgb(255, 255, 255, 0.6)"
+                height="5px"
+                onClick={() => declinedCard(id)}
+                width="60px"
+              >
+                Decline
+              </Button>
+              <Button
+                color="#eb762b"
+                height="4px"
+                onClick={() => acceptCard(id)}
+                width="60px"
+              >
+                Accept
+              </Button>
+            </Grouped>
+          </>
+        )}
+      </>
+    )
+  }
+
   return (
     <Box height="100%" width="90%" padding='0 0 0 60px'>
       {teamsData.map((team) => (
@@ -111,40 +147,7 @@ const Dashboard = () => {
                 data={card}
                 deleteCard={deleteCard}
                 updateCard={updateCard}
-                customBlock={card.contributor && (() =>
-                  (
-                    <>
-                      <Grouped>
-                        {card.accepted === "DECLINED" && <Text variant="small" color="rgb(255, 255, 255, 0.5)">Task Declined</Text>}
-                        {card.accepted !== "DECLINED" && <Text variant="small" color="rgb(255, 255, 255, 0.9)">Assigned by</Text>}
-                        <UserBox email={card.contributor} onlyPic />
-                      </Grouped>
-                      {!card.accepted && (
-                        <>
-                          <Spacing height="5px" />
-                          <Grouped>
-                            <Button
-                              color="rgb(255, 255, 255, 0.6)"
-                              height="5px"
-                              onClick={() => declinedCard(card.id)}
-                              width="60px"
-                            >
-                              Decline
-                            </Button>
-                            <Button
-                              color="#eb762b"
-                              height="4px"
-                              onClick={() => acceptCard(card.id)}
-                              width="60px"
-                            >
-                              Accept
-                            </Button>
-                          </Grouped>
-                        </>
-                      )}
-                    </>
-                  ))
-                }
+                customBlock={card.contributor && (() => customBlockRenderer(card))}
               />
             ))}
         </Board>

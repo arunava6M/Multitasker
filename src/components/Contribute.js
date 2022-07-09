@@ -85,7 +85,6 @@ const Contribute = () => {
   };
 
   const assignContributor = (email, cardId) => {
-    console.log('contributor: ', email, cardId)
     updateCard("contributor", email, cardId);
     updateCard("accepted", false, cardId);
   };
