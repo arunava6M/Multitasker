@@ -1,13 +1,17 @@
 import { createUseStyles } from "react-jss";
 import Proptypes from "prop-types";
+import { ThemeContext } from "../contexts/ThemeContext";
+import { useContext } from "react";
+
 
 const useStyles = createUseStyles(() => {
   const baseStyles = {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
+    textAlign: 'center',
+    justifyContent: ({justifyContent}) => justifyContent,
     padding: "10px",
-    margin: "5px",
+    margin: "5px 0 5px 0",
     cursor: "pointer",
     boxShadow: ({ shadow }) =>
       shadow && "-1px 93px 73px -53px rgba(0,0,0,0.53)",
@@ -17,24 +21,24 @@ const useStyles = createUseStyles(() => {
       ...baseStyles,
 
       textDecoration: "none",
-      width: ({ width }) => `${width}px`,
-      height: ({ height }) => `${height}px`,
+      width: ({ width }) => width,
+      height: ({ height }) => height,
       color: ({ color }) => color,
       transition: "0.2s",
-      borderRadius: "15px",
       border: ({ bordered }) => (bordered ? "2px solid #ffc799" : "none"),
       backgroundColor: ({ bg }) => bg,
 
       "&:hover": {
-        backgroundColor: "#fff",
-        color: "black",
+        color: "#fff",
         border: "none",
+        borderRight: '1px solid #fff'
       },
     },
 
     text_button: {
       ...baseStyles,
 
+      width: ({ width }) => width,
       background: "none",
       color: "inherit",
       border: "none",
@@ -45,20 +49,38 @@ const useStyles = createUseStyles(() => {
     },
     neumorphic_button: {
       ...baseStyles,
+      position: 'relative',
 
       outline: "none",
-      border: "none",
+      // border: "none",
+      height: ({height}) => height || '4em',
+      width: ({width}) => width || '8em',
+      border: '2px #090909 solid',
       borderRadius: "30px",
       fontWeight: 700,
-      background: "#24cfaa",
-      color: "#fff",
+      background: ({bg, theme}) => bg || theme.signIn.signInButtonBg,
+      color: "wheat",
       padding: "15px",
-      boxShadow: "3px 5px 8px #cbced1, -3px -8px 8px #ffffff",
+      boxShadow: ({theme}) => `inset 2px 2px 0px ${theme.signIn.lightShadow}, inset -2px -2px 0px ${theme.signIn.darkShadow}`,
       transition: "0.3s",
+      cursor: "pointer",
 
-      "&:hover": {
-        background: "#86e3cf",
+      '&:hover': {
+        boxShadow: ({theme}) => `2px 2px 5px 0 ${theme.signIn.darkShadow}, -2px -2px 3px 0 ${theme.signIn.lightShadow}`,
       },
+      '&:before': {
+        position: 'absolute',
+        content: '""',
+        height: ({height}) => height || '4.4em',
+        width: ({width}) => width || '8.4em',
+        top: '-6px',
+        left: '-5px',
+        // transform: 'translate(50%, 50%)',
+        borderRadius: 'inherit',
+        background: ({theme}) => theme.signIn.signInButtonBgShadow,
+        boxShadow: '11px 11px 22px #141414, -11px -11px 22px #525252',
+        cursor: "pointer",
+      }
     },
   };
 });
@@ -73,8 +95,12 @@ const Button = ({
   bg,
   color,
   shadow,
+  justifyContent,
+  icon
 }) => {
-  const classes = useStyles({ width, height, bordered, bg, color, shadow });
+  const theme = useContext(ThemeContext)
+
+  const classes = useStyles({ width, height, bordered, bg, color, shadow, justifyContent, icon, theme });
   return (
     <button className={classes[`${variant}_button`]} onClick={onClick}>
       {children}
@@ -85,22 +111,23 @@ const Button = ({
 Button.propTypes = {
   children: Proptypes.node.isRequired,
   onClick: Proptypes.func.isRequired,
-  width: Proptypes.number,
-  height: Proptypes.number,
+  width: Proptypes.string,
+  height: Proptypes.string,
   bordered: Proptypes.bool,
   bg: Proptypes.string,
-  variant: Proptypes.oneOf(["normal", "text"]),
+  variant: Proptypes.oneOf(["normal", "text", "neumorphic"]),
   color: Proptypes.string,
   shadow: Proptypes.bool,
+  justifyContent: Proptypes.string
 };
 
 Button.defaultProps = {
-  width: 100,
-  height: 40,
+  width: "100px",
+  height: "40px",
   bordered: false,
-  bg: "transparent",
   variant: "normal",
   color: "#ffc799",
   shadow: false,
+  justifyContent: 'center'
 };
 export default Button;

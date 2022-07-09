@@ -1,42 +1,27 @@
 import { useState, useEffect, useContext } from "react";
-import { createUseStyles } from "react-jss";
 
 import Board from "./Board";
 import Box from "./Box";
 import Card from "./Card";
-import { icons } from "../icons";
 import { db } from "../firebase";
 import { UserContext } from "../contexts/UserContext";
 import Button from "./Button";
 import UserBox from "./UserBox";
 import Grouped from "./Grouped";
 import Text from "./Text";
-
-const useStyles = createUseStyles({
-  flexBox: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "flex-start",
-
-    width: "100%",
-    minHeight: "100vh",
-
-    margin: "0 auto",
-    padding: "1px",
-  },
-});
+import Spacing from "./Spacer";
 
 const Dashboard = () => {
-  const classes = useStyles();
   const user = useContext(UserContext);
   const [cardsData, setCardsData] = useState([]);
   const [teamsData, setTeamsData] = useState([]);
 
   useEffect(() => {
+    console.log('inside Dashboard')
     db.collection("cards").onSnapshot((snapshot) => {
       setCardsData(
         snapshot.docs
-          .filter((doc) => doc.data().owner === user.email)
+          .filter((doc) => doc.data().owner === user.email || doc.data().contributor === user.email)
           .map((doc) => ({
             id: doc.id,
             ...doc.data(),
@@ -88,9 +73,16 @@ const Dashboard = () => {
   //     });
   //   };
   const acceptCard = (id) => updateCard("accepted", true, id);
+  const declinedCard = (id) => {
+    db.collection("cards")
+      .doc(id)
+      .update({
+        accepted: "DECLINED",
+      });
+  }
 
   return (
-    <Box height="80%" width="90%">
+    <Box height="100%" width="90%" padding='0 0 0 60px'>
       {teamsData.map((team) => (
         <Board
           key={team.id}
@@ -98,6 +90,19 @@ const Dashboard = () => {
           onDrop={onDrop}
           // updateBoard={updateBoard}
         >
+          {team.id === "toDo" && (
+            <>
+              <Button
+              onClick={() => addNewCard(team.id)}
+              width="80px"
+              height="30px"
+              variant="text"
+              >
+                <Text variant="small" color="#eb762b">Add card</Text>
+              </Button>
+              <Spacing height="20px" />
+            </>
+          )}
           {cardsData
             .filter((card) => card.teamId === team.id)
             .map((card) => (
@@ -106,45 +111,42 @@ const Dashboard = () => {
                 data={card}
                 deleteCard={deleteCard}
                 updateCard={updateCard}
-                customBlock={() =>
-                  card.contributor && (
+                customBlock={card.contributor && (() =>
+                  (
                     <>
                       <Grouped>
-                        <Text variant="small">Assigned by</Text>
+                        {card.accepted === "DECLINED" && <Text variant="small" color="rgb(255, 255, 255, 0.5)">Task Declined</Text>}
+                        {card.accepted !== "DECLINED" && <Text variant="small" color="rgb(255, 255, 255, 0.9)">Assigned by</Text>}
                         <UserBox email={card.contributor} onlyPic />
                       </Grouped>
                       {!card.accepted && (
-                        <Grouped>
-                          <Button
-                            color="#eb762b"
-                            height={5}
-                            onClick={() => deleteCard(card.id)}
-                          >
-                            Decline
-                          </Button>
-                          <Button
-                            bg="#eb762b"
-                            height={5}
-                            onClick={() => acceptCard(card.id)}
-                          >
-                            Accept
-                          </Button>
-                        </Grouped>
+                        <>
+                          <Spacing height="5px" />
+                          <Grouped>
+                            <Button
+                              color="rgb(255, 255, 255, 0.6)"
+                              height="5px"
+                              onClick={() => declinedCard(card.id)}
+                              width="60px"
+                            >
+                              Decline
+                            </Button>
+                            <Button
+                              color="#eb762b"
+                              height="4px"
+                              onClick={() => acceptCard(card.id)}
+                              width="60px"
+                            >
+                              Accept
+                            </Button>
+                          </Grouped>
+                        </>
                       )}
                     </>
-                  )
+                  ))
                 }
               />
             ))}
-          {team.id === "toDo" && (
-            <Button
-              color="#eb762b"
-              className={classes.button}
-              onClick={() => addNewCard(team.id)}
-            >
-              {icons["add"]}
-            </Button>
-          )}
         </Board>
       ))}
     </Box>

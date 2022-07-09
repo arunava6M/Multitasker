@@ -1,12 +1,13 @@
 import { createUseStyles } from "react-jss";
-import { useContext, useEffect, useState } from "react";
+import { useContext} from "react";
 import { UserContext } from "../contexts/UserContext";
 import { icons } from "../icons";
 import Grouped from "./Grouped";
 import Text from "./Text";
-import { db } from "../firebase";
 import Button from "./Button";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
+import Spacing from "./Spacer";
+import { ThemeContext } from "../contexts/ThemeContext";
 
 const useStyles = createUseStyles({
   headerContainer: {
@@ -15,9 +16,9 @@ const useStyles = createUseStyles({
     height: ({ isSmallScreen }) => (isSmallScreen ? "90px" : "30px"),
     display: "flex",
     flexDirection: ({ isSmallScreen }) => (isSmallScreen ? "column" : "row"),
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
     alignItems: ({ isSmallScreen }) => (isSmallScreen ? "left" : "center"),
-    padding: "10px",
+    padding: "20px",
   },
   icon: {
     fontSize: 34,
@@ -25,7 +26,7 @@ const useStyles = createUseStyles({
     paddingRight: ({ isSmallScreen }) => !isSmallScreen && "50px",
     paddingLeft: "50px",
   },
-  search: {
+    search: {
     width: ({ isSmallScreen }) => (isSmallScreen ? "100%" : "40%"),
     border: "3px solid #00B4CC",
     padding: "5px",
@@ -42,64 +43,36 @@ const useStyles = createUseStyles({
   },
 });
 
-const headerLinks = [
-  {
-    name: "Dashboard",
-    icon: "task",
-    link: "/dashboard",
-  },
-  {
-    name: "Contribute",
-    icon: "contribute",
-    link: "/contribute",
-  },
-];
-
 const Header = ({ isSmallScreen, signOut }) => {
   const classes = useStyles({ isSmallScreen });
   const user = useContext(UserContext);
-  const history = useHistory();
-
-  const [userData, setUserData] = useState({});
-
-  useEffect(() => {
-    if (user.email) {
-      db.collection("users")
-        .doc(user.email)
-        .onSnapshot((doc) => {
-          const name = doc.data()?.displayName.split(" ");
-          const tempData = {
-            firstName: name[0],
-            lastName: name[1],
-            ...doc.data(),
-          };
-          setUserData(tempData);
-        });
-    }
-  }, [setUserData, user]);
+  const theme = useContext(ThemeContext)
 
   if (!user.email) return null;
 
-  if (!userData.displayName) return <div>Loading</div>;
-
   return (
     <div className={classes.headerContainer}>
-      <Grouped>
-        {headerLinks.map(({ name, icon, link }) => (
-          <Button key={name} onClick={() => history.push(link)}>
-            <Text variant="medium">{icons[icon]}</Text>
-            &nbsp;&nbsp;
-            <Text variant="small">{name}</Text>
-          </Button>
-        ))}
-      </Grouped>
-      <Grouped>
+      {/* <Grouped>
+        <Button width={50} bordered onClick={signOut}>
+            {icons[`${theme.id === 'DARK' ? 'darkThemeIcon' : 'lightThemeIcon'}`]}
+        </Button>
         <Text variant="small" color="#ffc799">
-          {userData.displayName.split(" ")[0]}
+          theme
         </Text>
-        <img className={classes.image} src={userData.photoURL} alt="DP" />
+        <Spacing width='20px'/>
         <Link to="/">
           <Button width={50} bordered onClick={signOut}>
+            {icons["signOut"]}
+          </Button>
+        </Link>
+      </Grouped> */}
+      <Grouped>
+        <Text variant="small" color="#ffc799">
+          Sign out
+        </Text>
+        <Spacing width='20px'/>
+        <Link to="/">
+          <Button width='50px' height='50px' variant="neumorphic" bg='linear-gradient(145deg, #2e030d, #a1061c)' onClick={signOut}>
             {icons["signOut"]}
           </Button>
         </Link>

@@ -1,4 +1,6 @@
 import { createUseStyles } from "react-jss";
+import { ThemeContext } from "../contexts/ThemeContext";
+import { useContext } from "react";
 
 const useStyles = createUseStyles(() => {
   const commonStyle = {
@@ -6,6 +8,7 @@ const useStyles = createUseStyles(() => {
     justifyContent: "space-around",
     padding: "10px",
     margin: "10px",
+    transition: '1s'
   };
 
   return {
@@ -17,22 +20,19 @@ const useStyles = createUseStyles(() => {
       height: ({ height }) => height || "80vh",
       width: ({ width }) => width || "70vw",
       maxWidth: ({ maxWidth }) => maxWidth,
-      borderRadius: "30px",
+      borderRadius: "8px",
       padding: ({ padding }) => padding || "10px",
-      backgroundColor: ({ transparent, primary }) =>
-        !transparent && (primary ? "#eb762b" : "#ede6e1"),
-      backgroundImage: ({ orangy }) =>
-        orangy && "linear-gradient(to bottom right, #eb762b 10%, #c2581f)",
       boxShadow: ({ shadow }) =>
         shadow && "-1px 93px 73px -53px rgba(0,0,0,0.53)",
     },
     container_neumorphic: {
       width: "300px",
-      height: "150px",
-      padding: "60px 35px 35px 35px",
+      height: "120px",
+      padding: "50px 35px 35px 35px",
       borderRadius: "40px",
-      background: "#ecf0f3",
-      boxShadow: "13px 13px 20px #cbced1, -13px -13px 20px #ffffff",
+      background: 'linear-gradient(145deg, #332852, #2b2145)',
+      boxShadow:  `32px 32px 64px #231b37,
+             -32px -32px 64px #3d2f63`
     },
   };
 });
@@ -51,6 +51,7 @@ const Box = ({
   justify,
   key,
 }) => {
+  const theme = useContext(ThemeContext)
   const classes = useStyles({
     height,
     shadow,
@@ -61,6 +62,7 @@ const Box = ({
     alignItems,
     padding,
     justify,
+    theme
   });
   return (
     <div key={key} className={classes[`container_${variant}`]}>

@@ -1,5 +1,5 @@
 import { createUseStyles } from "react-jss";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, Fragment } from "react";
 import Box from "./Box";
 import { UserContext } from "../contexts/UserContext";
 
@@ -9,10 +9,17 @@ import Card from "./Card";
 import Button from "./Button";
 import Text from "./Text";
 import Spacer from "./Spacer";
+import Spacing from "./Spacer";
+import Grouped from "./Grouped"
 
 const useStyles = createUseStyles({
   cardContainer: {
     flex: 1.5,
+    boxShadow: "2px 1px 39px -3px rgba(0,0,0,0.5)",
+    overflow: "hidden",
+    maxHeight: "800px",
+    overflowY:"auto",
+    padding: "20px"
   },
   listContainer: {
     marginLeft: "20px",
@@ -24,8 +31,9 @@ const Contribute = () => {
   const classes = useStyles();
   const [contributeToList, setContributeToList] = useState([]);
   const [contributedCards, setContributedCards] = useState([]);
-  const [sendTo, setSendTo] = useState(null);
+  const [searchedUser,setSearchedUser] = useState({});
 
+  console.log('contributors: ', contributeToList)
   const user = useContext(UserContext);
 
   useEffect(() => {
@@ -44,21 +52,21 @@ const Contribute = () => {
     db.collection("cards").onSnapshot((snapshot) => {
       setContributedCards(
         snapshot.docs
-          .filter((doc) => doc.data().contributor === user.email)
+          .filter((doc) => doc.data().owner === user.email)
           .map((doc) => ({
             id: doc.id,
             ...doc.data(),
           }))
       );
     });
-  }, [sendTo]);
+  }, []);
 
   const addNewCard = () => {
     const newCard = {
-      owner: "",
+      owner: user.email,
       teamId: "toDo",
       title: "",
-      contributor: user.email,
+      contributor: "",
       description: "",
     };
     db.collection("cards").add(newCard);
@@ -76,12 +84,55 @@ const Contribute = () => {
       });
   };
 
-  const contributeTo = (email) => {
-    updateCard("owner", email, contributedCards[0].id);
-    updateCard("accepted", false, contributedCards[0].id);
+  const assignContributor = (email, cardId) => {
+    console.log('contributor: ', email, cardId)
+    updateCard("contributor", email, cardId);
+    updateCard("accepted", false, cardId);
   };
 
-  console.log(sendTo);
+  const contributorsEmailArray = Object.keys(contributeToList)
+  
+  const serachContributers = (e, cardId) => {
+    const searchQuery = e.target.value
+    const searchOutput = contributorsEmailArray.filter(el => el.includes(searchQuery)) 
+    setSearchedUser({[`${cardId}`]: searchOutput}); 
+  }
+
+  const searchRenderer = (cardId) => (
+    <Fragment key={cardId}>
+      <Text variant="small" color="rgb(255, 255, 255, 0.5)" >Assign a contributor:</Text>
+      <Spacer height="10px" />
+      <input type='text' onChange={(e)=>serachContributers(e, cardId)} />
+      {
+        searchedUser[cardId] && searchedUser[cardId].length>0 && 
+          searchedUser[cardId].map(email=><UserBox onClick={() => assignContributor(email, cardId)} email={email} />)
+      }
+    </Fragment>
+  )
+
+  const taskStatusRenderer = (accepted, contributor) => {
+    let showText = ""
+    switch (accepted) {
+      case true: showText = 'Assigned to'
+        break;
+      case 'DECLINED': showText = 'Task declined'
+        break;
+    
+      default:
+        showText = 'Requested for acceptance'
+    }
+
+    return (
+      <Grouped>
+        <Text variant="small" color="rgb(255, 255, 255, 0.5)">
+          {showText}
+          </Text>
+        <Spacing width="10px" />
+        <UserBox email={contributor} />
+      </Grouped> 
+    )
+  }
+
   return (
     <Box height="80%" width="90%">
       <div className={classes.cardContainer}>
@@ -89,8 +140,8 @@ const Contribute = () => {
           onClick={addNewCard}
           height={20}
           color="#fff"
-          width={70}
-          bg="#b5b1b0"
+          bg='rgba(53, 54, 59,0.5)'
+          width={100}
         >
           <Text variant="small">Give task</Text>
         </Button>
@@ -101,18 +152,14 @@ const Contribute = () => {
             data={card}
             deleteCard={deleteCard}
             updateCard={updateCard}
-            customBlock={() =>
-              card.owner && (
-                <UserBox email={card.owner} onlyPic customText="Assigned to" />
-              )
-            }
+            customBlock={() =>(card.contributor ? taskStatusRenderer( card.accepted, card.contributor): searchRenderer(card.id))}
           />
         ))}
       </div>
       <div className={classes.listContainer}>
         {contributeToList &&
           Object.entries(contributeToList).map((c) => (
-            <UserBox onClick={() => contributeTo(c[0])} email={c[0]} />
+            <UserBox email={c[0]} />
           ))}
       </div>
     </Box>

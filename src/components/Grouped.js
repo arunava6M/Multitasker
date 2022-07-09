@@ -5,22 +5,27 @@ const useStyles = createUseStyles({
   styles: {
     display: "flex",
     alignItems: ({ alignItems }) => alignItems,
-    flexDirection: "row",
+    flexDirection: ({flexDirection}) => flexDirection,
     justifyContent: "space-around",
+    width: ({width}) => width,
   },
 });
 
-const Grouped = ({ children, alignItems }) => {
-  const classes = useStyles({ alignItems });
-  return <div className={classes.styles}>{children}</div>;
+const Grouped = ({ children, alignItems, flexDirection, width, ...rest }) => {
+  const classes = useStyles({ alignItems, flexDirection, width });
+  return <div className={classes.styles} {...rest}>{children}</div>;
 };
 
 Grouped.propTypes = {
-  chidlren: Proptypes.node.isRequired,
+  children: Proptypes.node.isRequired,
+  flexDirection: Proptypes.string,
   alignItems: Proptypes.string,
+  width: Proptypes.string,
 };
 
 Grouped.defaultProps = {
   alignItems: "center",
+  flexDirection: "row",
+  width: "auto"
 };
 export default Grouped;

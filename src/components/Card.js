@@ -6,23 +6,41 @@ import TitleHeader from "./TitleHeader";
 const useStyles = createUseStyles({
   constainer: {
     padding: "10px 15px",
-    backgroundColor: "#fff",
+    // backgroundColor: "#fff",
+    backgroundImage: 'linear-gradient(135deg, rgba(53, 54, 59,0.5), rgba(53, 54, 59,0.3), rgba(53, 54, 59,0.1))',
     display: "flex",
     flexDirection: "column",
     justifyContent: "flex-start",
     cursor: "pointer",
     marginBottom: "15px",
-    minHeight: "100px",
+    // height:({description}) => {
+    //   if(description.length > 46){
+    //     return "120px"
+    //   } else if( description.length >23){
+    //     return "100px"
+    //   } else{
+    //     return "80px"
+    //   }}
+    
     borderRadius: "12px",
     transition: "0.3s",
-    //  transform: ({ dragStarted }) => dragStarted && 'rotate(10deg)'
+     transform: ({ dragStarted }) => dragStarted && 'rotate(10deg)',
+  },
+
+  customBlock: {
+    backgroundImage: 'linear-gradient(135deg, rgba(53, 54, 59,0.9), rgba(53, 54, 59,0.3), rgba(53, 54, 59,0.0))',
+    zIndex: '0',
+    marginTop: '10px',
+    borderRadius: '0 0 12px 12px',
+    padding: '10px'
   },
 
   textarea: {
     border: "0",
+    color: '#fff',
     background: "none",
-    minHeight: "80px",
-
+    minHeight: "60px",
+    // overflow: "hidden"
     "&:focus": {
       outline: "none",
     },
@@ -49,7 +67,7 @@ const Card = ({ deleteCard, data, updateCard, customBlock }) => {
   const [title, setTitle] = useState(data.title);
   const [dragStarted, setDragStarted] = useState(false);
   const [hovered, setHovered] = useState(false);
-  const classes = useStyles({ dragStarted });
+  const classes = useStyles({ dragStarted, description });
 
   const dragStart = (e) => {
     setDragStarted(true);
@@ -101,7 +119,9 @@ const Card = ({ deleteCard, data, updateCard, customBlock }) => {
         value={description}
         placeholder="Describe the task"
       />
-      {customBlock && customBlock()}
+      {customBlock && 
+        <div className={classes.customBlock}>{customBlock()}</div>
+      }
     </div>
   );
 };
