@@ -10,7 +10,7 @@ import {
   MdSend,
   MdNotStarted
 } from "react-icons/md";
-import { BsLightbulbOff,BsLightbulb} from "react-icons/bs"
+import { BsLightbulbOff,BsLightbulbOffFill} from "react-icons/bs"
 import { FcOk, FcApprove } from "react-icons/fc";
 
 export const icons = {
@@ -26,7 +26,7 @@ export const icons = {
   fcApprove: <FcApprove />,
   send: <MdSend />,
   darkThemeIcon: <BsLightbulbOff />,
-  lightThemeIcon: <BsLightbulb />,
+  lightThemeIcon: <BsLightbulbOffFill />,
   expandIcon: <MdNotStarted size={20} />
 
 };
