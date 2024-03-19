@@ -1,5 +1,5 @@
 import { createUseStyles } from "react-jss";
-import { useContext} from "react";
+import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { icons } from "../icons";
 import Grouped from "./Grouped";
@@ -26,7 +26,7 @@ const useStyles = createUseStyles({
     paddingRight: ({ isSmallScreen }) => !isSmallScreen && "50px",
     paddingLeft: "50px",
   },
-    search: {
+  search: {
     width: ({ isSmallScreen }) => (isSmallScreen ? "100%" : "40%"),
     border: "3px solid #00B4CC",
     padding: "5px",
@@ -46,7 +46,7 @@ const useStyles = createUseStyles({
 const Header = ({ isSmallScreen, signOut }) => {
   const classes = useStyles({ isSmallScreen });
   const user = useContext(UserContext);
-  const theme = useContext(ThemeContext)
+  const theme = useContext(ThemeContext);
 
   if (!user.email) return null;
 
@@ -67,12 +67,18 @@ const Header = ({ isSmallScreen, signOut }) => {
         </Link>
       </Grouped> */}
       <Grouped>
-        <Text variant="small" color="#ffc799">
+        <Text variant="small" color="black">
           Sign out
         </Text>
-        <Spacing width='20px'/>
+        <Spacing width="20px" />
         <Link to="/">
-          <Button width='50px' height='50px' variant="neumorphic" bg='linear-gradient(145deg, #2e030d, #a1061c)' onClick={signOut}>
+          <Button
+            width="50px"
+            height="50px"
+            bg="white"
+            onClick={signOut}
+            bordered
+          >
             {icons["signOut"]}
           </Button>
         </Link>

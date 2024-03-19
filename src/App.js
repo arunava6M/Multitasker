@@ -8,10 +8,11 @@ import { UserContext } from "./contexts/UserContext";
 import { ThemeContext } from "./contexts/ThemeContext";
 import SidePanel from "./components/SidePanel";
 import Routers from "./components/Routers";
-import { DARK_THEME } from './constants/colours';
+import { LIGHT_THEME, DARK_THEME } from './constants/colours';
 import { ViewportProvider } from "./components/ViewportProvider";
 import ResponsiveSidepanel from "./components/ResponsiveSidepanel";
 import Login from './pages/login'
+import { Redirect } from "react-router/cjs/react-router.min";
 
 const {appBackgroundImage, sidePanelBackgroundImage} = DARK_THEME
 const initialState = {
@@ -20,10 +21,10 @@ const initialState = {
 
 const useStyles = createUseStyles({
   app: {
-    height: "100vh",
+    minHeight: "100vh",
     display: "flex",
     justifyContent: "center",
-    backgroundImage: ({theme}) => theme.appBackgroundImage,
+    backgroundColor: ({theme}) => theme.appBackgroundImage,
     fontFamily: "Quicksand, sans-serif",
     transition: 'background-image 0.2s ease-in-out',
   },
@@ -36,10 +37,11 @@ const useStyles = createUseStyles({
   sidePanel: {
     flex: ({user}) => user.email ? 0.4 : 3,
     transition: '1s',
-    boxShadow: '30px 30px 61px #2b2145, -30px -30px 61px #352955'
+    // boxShadow: '30px 30px 61px #2b2145, -30px -30px 61px #352955',
 
     // padding: '0 0 0 30px',
     // boxShadow: '20px 1px 33px -3px rgba(0,0,0,0.1)',
+    // backgroundColor: 'red',
     // backgroundImage:({theme}) => `linear-gradient(135deg, ${theme.sidePanelBackgroundImage.color1}, ${theme.sidePanelBackgroundImage.color1}, ${sidePanelBackgroundImage.color2}, ${sidePanelBackgroundImage.color2},  ${sidePanelBackgroundImage.color3})`,
     // borderRight: '1px solid rgba(115, 90, 204,0.2)'
   },
@@ -51,7 +53,7 @@ const useStyles = createUseStyles({
 
 function App() {
   const [user, setUser] = useState(initialState);
-  const [theme, setTheme] = useState(DARK_THEME);
+  const [theme, setTheme] = useState(LIGHT_THEME);
   const classes = useStyles({user, theme});
 
   useEffect(() => {

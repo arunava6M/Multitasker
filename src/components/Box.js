@@ -16,8 +16,9 @@ const useStyles = createUseStyles(() => {
       ...commonStyle,
 
       justifyContent: ({ justify }) => justify,
+      flexDirection: ({ flexDirection }) => flexDirection,
       alignItems: ({ alignItems }) => alignItems,
-      height: ({ height }) => height || "80vh",
+      // height: ({ height }) => height || "80vh",
       width: ({ width }) => width || "70vw",
       maxWidth: ({ maxWidth }) => maxWidth,
       borderRadius: "8px",
@@ -50,6 +51,7 @@ const Box = ({
   padding,
   justify,
   key,
+  flexDirection = 'row',
 }) => {
   const theme = useContext(ThemeContext)
   const classes = useStyles({
@@ -62,7 +64,8 @@ const Box = ({
     alignItems,
     padding,
     justify,
-    theme
+    theme,
+    flexDirection
   });
   return (
     <div key={key} className={classes[`container_${variant}`]}>

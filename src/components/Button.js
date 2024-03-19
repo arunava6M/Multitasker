@@ -26,6 +26,7 @@ const useStyles = createUseStyles(() => {
       color: ({ color }) => color,
       transition: "0.2s",
       border: ({ bordered }) => (bordered ? "2px solid #ffc799" : "none"),
+      borderRadius: '15px',
       backgroundColor: ({ bg }) => bg,
 
       "&:hover": {

@@ -15,7 +15,7 @@ const useStyles = createUseStyles({
     fontSize: "12px",
     width: "100%",
     background: "none",
-    color: '#fff',
+    // color: ({theme}) => theme.primarytext,
 
     "&:focus": {
       outline: "none",
