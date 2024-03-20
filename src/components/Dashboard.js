@@ -164,7 +164,7 @@ const Dashboard = () => {
     };
 
     checkBoards();
-  });
+  }, [user]);
 
   const onDrop = (teamId, cardProps) => {
     if (cardProps.teamId !== teamId) {
