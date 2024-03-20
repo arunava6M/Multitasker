@@ -12,26 +12,24 @@ const useStyles = createUseStyles({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    transition: "transform 0.5s ease",
+    "&:hover": {
+      transform: "scale(1.1)",
+    },
   },
 });
 
 const Login = ({ signIn }) => {
-  const theme = useContext(ThemeContext)
+  const theme = useContext(ThemeContext);
   const classes = useStyles();
   return (
     <div className={classes.signInContainer}>
-      <Box
-        variant="neumorphic"
-        width="300px"
-        padding="50px"
-        height="100px"
-        alignItems="center"
-      >
+      <Box width="300px" padding="50px" height="100px" alignItems="center">
         <Text bold color={theme.primarytext}>
           Sign in with Google to continue
         </Text>
         <Spacer height="30px" />
-        <Button variant="neumorphic" onClick={signIn}>
+        <Button bg="#2ec4b6" onClick={signIn}>
           Sign in
         </Button>
       </Box>

@@ -1,20 +1,19 @@
 import { useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
-import { BrowserRouter } from 'react-router-dom'
-
+import { BrowserRouter } from "react-router-dom";
 
 import { auth, db, provider } from "./firebase";
 import { UserContext } from "./contexts/UserContext";
 import { ThemeContext } from "./contexts/ThemeContext";
 import SidePanel from "./components/SidePanel";
 import Routers from "./components/Routers";
-import { LIGHT_THEME, DARK_THEME } from './constants/colours';
+import { LIGHT_THEME, DARK_THEME } from "./constants/colours";
 import { ViewportProvider } from "./components/ViewportProvider";
 import ResponsiveSidepanel from "./components/ResponsiveSidepanel";
-import Login from './pages/login'
+import Login from "./pages/login";
 import { Redirect } from "react-router/cjs/react-router.min";
 
-const {appBackgroundImage, sidePanelBackgroundImage} = DARK_THEME
+const { appBackgroundImage, sidePanelBackgroundImage } = DARK_THEME;
 const initialState = {
   email: null,
 };
@@ -24,9 +23,9 @@ const useStyles = createUseStyles({
     minHeight: "100vh",
     display: "flex",
     justifyContent: "center",
-    backgroundColor: ({theme}) => theme.appBackgroundImage,
+    backgroundColor: ({ theme }) => theme.appBackgroundImage,
     fontFamily: "Quicksand, sans-serif",
-    transition: 'background-image 0.2s ease-in-out',
+    transition: "background-image 0.2s ease-in-out",
   },
   signInContainer: {
     height: "100%",
@@ -35,8 +34,8 @@ const useStyles = createUseStyles({
     alignItems: "center",
   },
   sidePanel: {
-    flex: ({user}) => user.email ? 0.4 : 3,
-    transition: '1s',
+    flex: ({ user }) => (user.email ? 0.4 : 3),
+    transition: "1s",
     // boxShadow: '30px 30px 61px #2b2145, -30px -30px 61px #352955',
 
     // padding: '0 0 0 30px',
@@ -46,15 +45,15 @@ const useStyles = createUseStyles({
     // borderRight: '1px solid rgba(115, 90, 204,0.2)'
   },
   main: {
-    flex:  ({user}) => user.email ? 3 : 1,
-    transition: '1s'
-  }
+    flex: ({ user }) => (user.email ? 3 : 1),
+    transition: "1s",
+  },
 });
 
 function App() {
   const [user, setUser] = useState(initialState);
   const [theme, setTheme] = useState(LIGHT_THEME);
-  const classes = useStyles({user, theme});
+  const classes = useStyles({ user, theme });
 
   useEffect(() => {
     const parsedUser = JSON.parse(localStorage.getItem("user"));
@@ -94,14 +93,14 @@ function App() {
         <ViewportProvider>
           <ThemeContext.Provider value={theme}>
             <UserContext.Provider value={user}>
-              {!user.email &&
+              {!user.email && (
                 <div className={classes.sidePanel}>
                   {/* <SidePanel signIn={signIn} toggleTheme={setTheme}/> */}
                   <Login signIn={signIn} />
                 </div>
-              }
+              )}
               {user.email && <ResponsiveSidepanel />}
-              
+
               <div className={classes.main}>
                 <Routers signIn={signIn} signOut={signOut} />
               </div>

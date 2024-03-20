@@ -11,6 +11,7 @@ import Grouped from "./Grouped";
 import Text from "./Text";
 import Spacing from "./Spacer";
 import styled from "styled-components";
+import loader from "../images/Hourglass.gif";
 
 const DateWrapper = styled.div`
   background-color: white;
@@ -19,6 +20,20 @@ const DateWrapper = styled.div`
   padding: 10px;
   border-radius: 20px;
   border: 1px solid #cccccc;
+`;
+
+const LoaderWrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const LoadGif = styled.img`
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background-color: white;
 `;
 
 const Date = styled.div`
@@ -81,6 +96,7 @@ const Dashboard = () => {
   const [date, setDate] = useState(0);
   const classes = useStyles();
   const [taskBoardPosition, setTaskBoardPosition] = useState({});
+  const [loading, setLoading] = useState(true);
 
   // const currentDate =
   // useEffect(() => {
@@ -157,6 +173,7 @@ const Dashboard = () => {
 
         // const boardsIdArray = snapshot.docs.map((doc) => doc.id);
         setAllBoards(boardsArray);
+        setLoading(false);
       } catch (error) {
         console.error("Error checking boards: ", error);
       }
@@ -302,6 +319,13 @@ const Dashboard = () => {
   };
   // console.log(taskBoardPosition);
 
+  if (loading) {
+    return (
+      <LoaderWrapper>
+        <LoadGif src={loader} alt="loading..." />
+      </LoaderWrapper>
+    );
+  }
   return (
     <Box height="100%" width="90%" padding="0 0 0 60px" flexDirection="column">
       <DateWrapper>

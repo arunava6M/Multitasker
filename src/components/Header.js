@@ -78,6 +78,7 @@ const Header = ({ isSmallScreen, signOut }) => {
             bg="white"
             onClick={signOut}
             bordered
+            color="#ff9f1c"
           >
             {icons["signOut"]}
           </Button>
