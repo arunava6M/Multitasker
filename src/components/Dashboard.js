@@ -157,7 +157,6 @@ const Dashboard = () => {
 
         // const boardsIdArray = snapshot.docs.map((doc) => doc.id);
         setAllBoards(boardsArray);
-        setHasBoards(!snapshot.empty);
       } catch (error) {
         console.error("Error checking boards: ", error);
       }
@@ -341,7 +340,7 @@ const Dashboard = () => {
           ))}
       </DateWrapper>
       <Box>
-        {!hasBoards && (
+        {allBoards.length === 0 && (
           <div>
             <div>So empty !!</div>
             <div>Choose a date !</div>
